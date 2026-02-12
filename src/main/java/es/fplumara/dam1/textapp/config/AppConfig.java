@@ -35,7 +35,7 @@ public class AppConfig {
     }
 
     public AppConfig() {
-        Path path = Path.of("C:\\Users\\AndrésJaimeEduardoDí\\OneDrive - SUMMA Formación Profesional\\Documentos\\GitHub\\Mini-aplicacion\\data\\config.properties");
+        Path path = Path.of("data\\config.properties");
         Properties properties = new Properties();
 
 
@@ -44,6 +44,13 @@ public class AppConfig {
             storeType = properties.getProperty("store.type");
             messagesFile = properties.getProperty("messages.file");
             String maxLengthStr = properties.getProperty("messages.maxLength");
+
+            if (storeType == null || messagesFile == null || maxLengthStr == null) {
+                throw new ConfigException("Faltan propiedades obligatorias");
+            }
+
+            maxLenght = Integer.parseInt(maxLengthStr);
+
         } catch (IOException e) {
             throw new ConfigException("");
         }
