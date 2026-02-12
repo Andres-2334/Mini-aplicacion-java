@@ -12,14 +12,18 @@ import java.util.Properties;
 
 public class AppConfig {
 
-    private StoreType storeType;
+    private String storeType;
     private String messagesFile;
     private int maxLenght;
 
 
-    public File getStoreType() {
+    public StoreType getStoreType() {
+        try {
+            return StoreType.valueOf(storeType);
+        }catch (IllegalArgumentException e){
+            throw new ConfigException("Tipo no valido" + storeType);
+        }
 
-        return File;
     }
 
     public int getMaxLenght() {
@@ -27,7 +31,6 @@ public class AppConfig {
     }
 
     public String getMessagesFile() {
-
         return messagesFile;
     }
 
@@ -35,8 +38,12 @@ public class AppConfig {
         Path path = Path.of("C:\\Users\\AndrésJaimeEduardoDí\\OneDrive - SUMMA Formación Profesional\\Documentos\\GitHub\\Mini-aplicacion\\data\\config.properties");
         Properties properties = new Properties();
 
+
         try (InputStream in = Files.newInputStream(path)) {
             properties.load(in);
+            storeType = properties.getProperty("store.type");
+            messagesFile = properties.getProperty("messages.file");
+            String maxLengthStr = properties.getProperty("messages.maxLength");
         } catch (IOException e) {
             throw new ConfigException("");
         }
